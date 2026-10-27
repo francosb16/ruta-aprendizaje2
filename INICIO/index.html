@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173b50">
+  <meta name="description" content="Índice del Curso HPPSME 2027: Equipos Psicosociales.">
+  <title>Curso HPPSME 2027 | Equipos Psicosociales</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --body-size: 14pt;
+      --heading-size: 18pt;
+      --ink: #183746;
+      --muted: #58717a;
+      --paper: #f5f7f4;
+      --surface: #fff;
+      --line: #dce6e2;
+      --teal: #167c79;
+      --teal-dark: #105e5c;
+      --coral: #e58b71;
+      --shadow: 0 16px 40px rgb(24 55 70 / 8%);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Segoe UI", Arial, sans-serif;
+      line-height: 1.65;
+      font-size: var(--body-size);
+      text-align: justify;
+    }
+
+    a { color: inherit; }
+
+    h1, h2, h3 {
+      font-size: var(--heading-size);
+      line-height: 1.3;
+      text-align: justify;
+    }
+
+    main, footer {
+      width: min(1080px, 100%);
+      margin: 0 auto;
+    }
+
+    main { padding: 48px clamp(16px, 4vw, 32px) 72px; }
+
+    .section-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading p {
+      margin: 0 0 3px;
+      color: var(--muted);
+    }
+
+    .units {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .unit-card {
+      display: block;
+      width: 100%;
+      padding: 25px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      color: inherit;
+      cursor: pointer;
+      font: inherit;
+      text-align: justify;
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    }
+
+    .unit-card:hover {
+      transform: translateY(-3px);
+      border-color: #a9d2c8;
+      box-shadow: 0 20px 46px rgb(24 55 70 / 12%);
+    }
+
+    .unit-card:focus-visible,
+    .dialog-close:focus-visible {
+      outline: 3px solid var(--coral);
+      outline-offset: 4px;
+    }
+
+    .unit-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .unit-number {
+      display: grid;
+      flex: 0 0 42px;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border-radius: 13px;
+      background: #e7f2ef;
+      color: var(--teal-dark);
+      font-size: var(--body-size);
+      font-weight: 800;
+    }
+
+    .card-title {
+      font-size: var(--heading-size);
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .label {
+      margin: 20px 0 5px;
+      color: var(--teal-dark);
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .objective {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .topics {
+      display: grid;
+      gap: 8px;
+      margin: 10px 0 0;
+      padding-left: 20px;
+      color: #344f5a;
+    }
+
+    .topics li::marker { color: var(--teal); }
+
+    .unit-prompt {
+      display: block;
+      margin-top: 16px;
+      color: var(--teal-dark);
+      font-weight: 700;
+    }
+
+    .unit-dialog {
+      width: min(760px, calc(100vw - 32px));
+      max-width: 100%;
+      max-height: min(88vh, 880px);
+      max-height: min(88dvh, 880px);
+      overflow: auto;
+      padding: clamp(20px, 5vw, 36px);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--surface);
+      color: var(--ink);
+      box-shadow: 0 24px 80px rgb(10 32 42 / 28%);
+      overscroll-behavior: contain;
+    }
+
+    .unit-dialog[open] {
+      animation: dialog-enter 260ms cubic-bezier(.2, .8, .2, 1) both;
+    }
+
+    .unit-dialog::backdrop {
+      background: rgb(12 31 39 / 62%);
+      backdrop-filter: blur(3px);
+      animation: backdrop-enter 200ms ease-out both;
+    }
+
+    .dialog-heading {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .dialog-heading h2 { margin: 0; }
+
+    .dialog-close {
+      display: grid;
+      flex: 0 0 44px;
+      width: 44px;
+      height: 44px;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: #f3f7f5;
+      color: var(--ink);
+      cursor: pointer;
+      font: inherit;
+      line-height: 1;
+    }
+
+    .assessment {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: center;
+      margin-top: 28px;
+      padding: 28px;
+      border-radius: 18px;
+      background: #e7f0ed;
+      scroll-margin-top: 20px;
+    }
+
+    .assessment h2 { margin-bottom: 8px; }
+
+    .assessment p {
+      max-width: 700px;
+      margin: 0;
+      color: #47616b;
+    }
+
+    .assessment-tag {
+      padding: 9px 13px;
+      border: 1px solid #c5dbd4;
+      border-radius: 999px;
+      color: var(--teal-dark);
+      font-weight: 700;
+      text-align: center;
+    }
+
+    footer {
+      padding: 0 24px 28px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @keyframes dialog-enter {
+      from { opacity: 0; transform: translateY(14px) scale(.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes backdrop-enter {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media (max-width: 720px) {
+      .units { grid-template-columns: 1fr; }
+      .section-heading { display: block; }
+      .section-heading p { margin-top: 8px; }
+      .assessment { grid-template-columns: 1fr; gap: 14px; }
+      .assessment-tag { justify-self: start; }
+      .unit-card { padding: 21px; }
+    }
+
+    @media (max-width: 420px) {
+      main { padding: 32px 16px 48px; }
+      .assessment { padding: 21px; }
+      .unit-dialog { width: calc(100vw - 20px); padding: 20px 16px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section aria-labelledby="units-title">
+      <div class="section-heading">
+        <h2 id="units-title">Unidades de aprendizaje</h2>
+        <p>Objetivos y contenidos principales</p>
+      </div>
+
+      <div class="units">
+        <button class="unit-card" type="button" data-open-dialog="unidad-1" aria-haspopup="dialog">
+          <span class="unit-top">
+            <span class="unit-number" aria-hidden="true">01</span>
+            <span class="card-title">Comunidades de Cuidado y Salud Mental</span>
+          </span>
+          <span class="unit-prompt">Presiona para ver objetivo y contenidos</span>
+        </button>
+        <button class="unit-card" type="button" data-open-dialog="unidad-2" aria-haspopup="dialog">
+          <span class="unit-top">
+            <span class="unit-number" aria-hidden="true">02</span>
+            <span class="card-title">Salud Mental Escolar basada en evidencias y Red de Salud</span>
+          </span>
+          <span class="unit-prompt">Presiona para ver objetivo y contenidos</span>
+        </button>
+        <button class="unit-card" type="button" data-open-dialog="unidad-3" aria-haspopup="dialog">
+          <span class="unit-top">
+            <span class="unit-number" aria-hidden="true">03</span>
+            <span class="card-title">Detección, Derivación y Respuesta en Crisis</span>
+          </span>
+          <span class="unit-prompt">Presiona para ver objetivo y contenidos</span>
+        </button>
+        <button class="unit-card" type="button" data-open-dialog="unidad-4" aria-haspopup="dialog">
+          <span class="unit-top">
+            <span class="unit-number" aria-hidden="true">04</span>
+            <span class="card-title">Diseño e Implementación de Intervenciones Psicosociales</span>
+          </span>
+          <span class="unit-prompt">Presiona para ver objetivo y contenidos</span>
+        </button>
+      </div>
+    </section>
+
+    <dialog class="unit-dialog" id="unidad-1" aria-labelledby="titulo-unidad-1">
+      <div class="dialog-heading">
+        <h2 id="titulo-unidad-1">Unidad 1: Comunidades de Cuidado y Salud Mental</h2>
+        <button class="dialog-close" type="button" aria-label="Cerrar ventana">&times;</button>
+      </div>
+      <p class="label">Objetivo</p>
+      <p class="objective">Analizar el rol de la comunidad educativa en la promoción del bienestar, distinguiendo cuidado personal, mutuo e institucional, para fundamentar la propia práctica.</p>
+      <p class="label">Contenidos</p>
+      <ul class="topics">
+        <li>Salud mental y escuela.</li>
+        <li>Marco normativo: Política Nacional de Convivencia Educativa 2024-2030.</li>
+        <li>Estrategia de Salud Mental en Comunidades Educativas.</li>
+        <li>Sensibilización para la reducción del estigma en salud mental y educación.</li>
+        <li>Rol y herramientas para el cuidado personal y el cuidado mutuo de trabajadores y estudiantes.</li>
+      </ul>
+    </dialog>
+
+    <dialog class="unit-dialog" id="unidad-2" aria-labelledby="titulo-unidad-2">
+      <div class="dialog-heading">
+        <h2 id="titulo-unidad-2">Unidad 2: Salud Mental Escolar basada en evidencias y Red de Salud</h2>
+        <button class="dialog-close" type="button" aria-label="Cerrar ventana">&times;</button>
+      </div>
+      <p class="label">Objetivo</p>
+      <p class="objective">Aplicar criterios de evidencia y conocimiento de la red de salud para fundamentar decisiones de derivación y selección de intervenciones.</p>
+      <p class="label">Contenidos</p>
+      <ul class="topics">
+        <li>Modelo de Atención en Salud Mental Comunitaria y red pública de salud.</li>
+        <li>Salud mental en Atención Primaria de Salud (APS).</li>
+        <li>Programas de salud mental en Atención Primaria vinculados a la escuela.</li>
+        <li>Principios y enfoques de la salud mental escolar con énfasis en los sistemas de apoyo de múltiples niveles.</li>
+        <li>Principios básicos para acciones de salud mental informadas por la evidencia.</li>
+      </ul>
+    </dialog>
+
+    <dialog class="unit-dialog" id="unidad-3" aria-labelledby="titulo-unidad-3">
+      <div class="dialog-heading">
+        <h2 id="titulo-unidad-3">Unidad 3: Detección, Derivación y Respuesta en Crisis</h2>
+        <button class="dialog-close" type="button" aria-label="Cerrar ventana">&times;</button>
+      </div>
+      <p class="label">Objetivo</p>
+      <p class="objective">Aplicar protocolos de detección temprana, derivación asistida y primera ayuda psicológica ante situaciones de riesgo y crisis, y transferir focos, herramientas y protocolos a los equipos docentes.</p>
+      <p class="label">Contenidos</p>
+      <ul class="topics">
+        <li>El equilibrio inestable de la salud mental: balance entre demandas y recursos.</li>
+        <li>Señales y riesgos de trastornos y problemas de salud mental.</li>
+        <li>Detección temprana.</li>
+        <li>Derivación asistida.</li>
+        <li>Intervención en crisis y primera ayuda psicológica en contexto escolar.</li>
+      </ul>
+    </dialog>
+
+    <dialog class="unit-dialog" id="unidad-4" aria-labelledby="titulo-unidad-4">
+      <div class="dialog-heading">
+        <h2 id="titulo-unidad-4">Unidad 4: Diseño e Implementación de Intervenciones Psicosociales</h2>
+        <button class="dialog-close" type="button" aria-label="Cerrar ventana">&times;</button>
+      </div>
+      <p class="label">Objetivo</p>
+      <p class="objective">Diseñar una intervención psicosocial contextualizada, articulada con el currículum y los instrumentos de gestión institucional, incorporando el cuidado mutuo del equipo.</p>
+      <p class="label">Contenidos</p>
+      <ul class="topics">
+        <li>Elementos generales sobre intervenciones desde el rol psicosocial.</li>
+        <li>Distribución del trabajo de la dupla en los sistemas de apoyo de múltiples niveles.</li>
+        <li>Diseño de intervenciones de salud mental desde el escenario de la escuela.</li>
+        <li>Herramientas para el trabajo de salud mental escolar.</li>
+        <li>Resolución de un caso: Carlos.</li>
+      </ul>
+    </dialog>
+
+    <section class="assessment" id="evaluacion" aria-labelledby="assessment-title">
+      <div>
+        <p class="label">Cierre del curso</p>
+        <h2 id="assessment-title">Evaluación: Cuestionario Integrador de Juicio situacional por etapas</h2>
+        <p><strong>Objetivo:</strong> Integrar los aprendizajes de los cuatro módulos en la toma de decisiones frente a un caso que se desarrolla por etapas.</p>
+      </div>
+      <span class="assessment-tag">Evaluación integradora</span>
+    </section>
+  </main>
+
+  <footer>
+    Curso HPPSME 2027 · Equipos Psicosociales
+  </footer>
+  <script>
+    document.querySelectorAll("[data-open-dialog]").forEach((trigger) => {
+      trigger.addEventListener("click", () => {
+        const dialog = document.getElementById(trigger.dataset.openDialog);
+        if (dialog instanceof HTMLDialogElement) dialog.showModal();
+      });
+    });
+
+    document.querySelectorAll(".unit-dialog").forEach((dialog) => {
+      dialog.querySelector(".dialog-close").addEventListener("click", () => dialog.close());
+      dialog.addEventListener("click", (event) => {
+        if (event.target === dialog) dialog.close();
+      });
+    });
+  </script>
+</body>
+</html>
