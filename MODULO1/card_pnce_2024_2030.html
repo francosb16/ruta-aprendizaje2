@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principios de la convivencia educativa</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 24px;
+            background: #eef2f4;
+            color: #17324d;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .tarjetas {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 840px;
+            margin: 0 auto;
+        }
+
+        .tarjeta {
+            min-height: 330px;
+            perspective: 1000px;
+        }
+
+        .tarjeta-interior {
+            position: relative;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            width: 100%;
+            min-height: 330px;
+            transform-style: preserve-3d;
+            transition: transform 650ms cubic-bezier(.2, .7, .2, 1);
+        }
+
+        .tarjeta.volteada .tarjeta-interior {
+            transform: rotateY(180deg);
+        }
+
+        .cara {
+            position: relative;
+            grid-area: 1 / 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;
+            min-width: 0;
+            min-height: 330px;
+            padding: clamp(20px, 4vw, 28px);
+            border: 1px solid #d5e0e5;
+            border-radius: 14px;
+            background: #ffffff;
+            box-shadow: 0 8px 22px rgba(23, 50, 77, .1);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        .cara-frontal {
+            border-top: 6px solid #35b8b0;
+        }
+
+        .tarjeta-inclusion .cara-frontal {
+            border-top-color: #f5c451;
+        }
+
+        .cara-trasera {
+            transform: rotateY(180deg);
+            border-top: 6px solid #35b8b0;
+        }
+
+        .tarjeta-inclusion .cara-trasera {
+            border-top-color: #f5c451;
+        }
+
+        .etiqueta {
+            margin: 0 0 12px;
+            color: #687681;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            margin: 0;
+            color: #17324d;
+            font-size: clamp(22px, 3vw, 28px);
+            line-height: 1.2;
+        }
+
+        .descripcion {
+            margin: 22px 0;
+            color: #354b5c;
+            font-size: 16px;
+            line-height: 1.65;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        .valores {
+            color: #17324d;
+            font-weight: bold;
+        }
+
+        .boton-voltear {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border: 0;
+            border-radius: 7px;
+            background: #35b8b0;
+            color: #ffffff;
+            font: inherit;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .tarjeta-inclusion .boton-voltear {
+            background: #17324d;
+        }
+
+        .boton-voltear:hover {
+            filter: brightness(.92);
+        }
+
+        .boton-voltear:focus-visible {
+            outline: 3px solid #f5c451;
+            outline-offset: 3px;
+        }
+
+        @media (max-width: 620px) {
+            body {
+                padding: 12px;
+            }
+
+            .tarjetas {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .tarjeta,
+            .tarjeta-interior,
+            .cara {
+                min-height: 0;
+            }
+
+            .cara {
+                min-height: 300px;
+                padding: 22px;
+            }
+
+            .descripcion {
+                font-size: 15px;
+                line-height: 1.6;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .tarjeta-interior {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="tarjetas" aria-label="Principios de la convivencia educativa">
+        <article class="tarjeta" aria-label="Principio del Cuidado Colectivo">
+            <div class="tarjeta-interior">
+                <section class="cara cara-frontal">
+                    <div>
+                        <p class="etiqueta">Principio 1</p>
+                        <h2>Principio del Cuidado Colectivo</h2>
+                    </div>
+                    <button class="boton-voltear" type="button" aria-expanded="false">
+                        Conocer el principio <span aria-hidden="true">↻</span>
+                    </button>
+                </section>
+                <section class="cara cara-trasera" aria-hidden="true" inert>
+                    <div>
+                        <p class="etiqueta">Principio 1</p>
+                        <h2>Principio del Cuidado Colectivo</h2>
+                        <p class="descripcion">
+                            Releva que las acciones, tanto individuales como colectivas,
+                            impactan en la salud mental y en el bienestar integral de cada
+                            integrante de la comunidad; y enfatiza los valores de
+                            <strong class="valores">corresponsabilidad, confianza y colaboración</strong>
+                            como orientadores del quehacer educativo y de los modos de relacionarse.
+                        </p>
+                    </div>
+                    <button class="boton-voltear" type="button">
+                        Volver <span aria-hidden="true">↻</span>
+                    </button>
+                </section>
+            </div>
+        </article>
+
+        <article class="tarjeta tarjeta-inclusion" aria-label="Principio de Inclusión">
+            <div class="tarjeta-interior">
+                <section class="cara cara-frontal">
+                    <div>
+                        <p class="etiqueta">Principio 2</p>
+                        <h2>Principio de Inclusión</h2>
+                    </div>
+                    <button class="boton-voltear" type="button" aria-expanded="false">
+                        Conocer el principio <span aria-hidden="true">↻</span>
+                    </button>
+                </section>
+                <section class="cara cara-trasera" aria-hidden="true" inert>
+                    <div>
+                        <p class="etiqueta">Principio 2</p>
+                        <h2>Principio de Inclusión</h2>
+                        <p class="descripcion">
+                            Enfatiza el reconocimiento de las diversidades y su importancia
+                            para la construcción de comunidades educativas pluralistas y
+                            garantes de derechos, destacando los valores de
+                            <strong class="valores">respeto, igualdad y equidad</strong>.
+                        </p>
+                    </div>
+                    <button class="boton-voltear" type="button">
+                        Volver <span aria-hidden="true">↻</span>
+                    </button>
+                </section>
+            </div>
+        </article>
+    </main>
+    <script>
+        document.querySelectorAll(".tarjeta").forEach((tarjeta) => {
+            const caraFrontal = tarjeta.querySelector(".cara-frontal");
+            const caraTrasera = tarjeta.querySelector(".cara-trasera");
+            const botonFrontal = caraFrontal.querySelector("button");
+
+            tarjeta.querySelectorAll(".boton-voltear").forEach((boton) => {
+                boton.addEventListener("click", () => {
+                    const volteada = tarjeta.classList.toggle("volteada");
+                    caraFrontal.setAttribute("aria-hidden", String(volteada));
+                    caraTrasera.setAttribute("aria-hidden", String(!volteada));
+                    caraFrontal.toggleAttribute("inert", volteada);
+                    caraTrasera.toggleAttribute("inert", !volteada);
+                    botonFrontal.setAttribute("aria-expanded", String(volteada));
+                    (volteada ? caraTrasera : caraFrontal).querySelector("button").focus();
+                });
+            });
+        });
+    </script>
+</body>
+</html>
