@@ -12,8 +12,6 @@
 
         body {
             margin: 0;
-            
-          
             font-family: Arial, Helvetica, sans-serif;
         }
 
@@ -73,6 +71,14 @@
             border-left-color: #17324d;
         }
 
+        .recurso:nth-child(5) {
+            border-left-color: #35b8b0;
+        }
+
+        .recurso:nth-child(6) {
+            border-left-color: #f5c451;
+        }
+
         .nombre {
             min-width: 0;
         }
@@ -105,15 +111,11 @@
             white-space: nowrap;
         }
 
-        .recurso:nth-child(2) .descargar {
-            background: #35b8b0;
-        }
-
-        .recurso:nth-child(3) .descargar {
-            background: #35b8b0;
-        }
-
-        .recurso:nth-child(4) .descargar {
+        .recurso:nth-child(2) .descargar,
+        .recurso:nth-child(3) .descargar,
+        .recurso:nth-child(4) .descargar,
+        .recurso:nth-child(5) .descargar,
+        .recurso:nth-child(6) .descargar {
             background: #35b8b0;
         }
 
@@ -140,7 +142,6 @@
 
 <body>
     <main class="contenedor">
-
         <section class="lista">
             <article class="recurso">
                 <div class="nombre">
@@ -171,8 +172,14 @@
             <article class="recurso">
                 <div class="nombre">
                     <strong>Ministerio de Educación (2024)</strong>
-                    <span><em>Política Nacional de Convivencia Educativa 2024-2030</em></span>
+                    <span><em>Política Nacional de Convivencia Educativa 2024–2030</em></span>
                 </div>
+                <a class="descargar"
+                   href="https://culturaeducativa.mineduc.gob.cl/wp-content/uploads/2025/12/Politica-Nacional-Convivencia-Educativa.-Documento-Central-1.pdf"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    Ver documento
+                </a>
             </article>
 
             <article class="recurso">
@@ -180,6 +187,12 @@
                     <strong>Rojas Andrade, R.</strong>
                     <span>Webinar <em>Bienestar y salud mental desde el modelo Escuela Total Multinivel</em>. Unidad de Cultura Educativa, Mineduc.</span>
                 </div>
+                <a class="descargar"
+                   href="https://www.youtube.com/watch?v=Q5vjCGE5pyo&t=6s"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    Ver video
+                </a>
             </article>
 
             <article class="recurso">
@@ -187,6 +200,12 @@
                     <strong>Organización Mundial de la Salud (2022)</strong>
                     <span><em>Informe mundial sobre salud mental: transformar la salud mental para todos</em></span>
                 </div>
+                <a class="descargar"
+                   href="https://www.who.int/es/publications/i/item/9789240050860"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    Ver enlace
+                </a>
             </article>
         </section>
     </main>
