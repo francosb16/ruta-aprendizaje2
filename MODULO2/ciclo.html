@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ciclo del equipo de convivencia educativa</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #102b31;
+      background: #f3f5f2;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 10px;
+      background: #f3f5f2;
+    }
+
+    .cycle {
+      width: min(100%, 1120px);
+      display: grid;
+      grid-template-columns: minmax(270px, 310px) minmax(0, 1fr);
+      align-items: center;
+      gap: 20px;
+    }
+
+    .wheel {
+      display: block;
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+
+    .segment {
+      cursor: pointer;
+      outline: none;
+    }
+
+    .segment path {
+      stroke: #f3f5f2;
+      stroke-width: 3;
+      transition: fill 180ms ease, filter 180ms ease;
+    }
+
+    .segment:hover path {
+      filter: brightness(.96);
+    }
+
+    .segment:focus-visible path {
+      stroke: #f5bb2d;
+      stroke-width: 5;
+    }
+
+    .segment text {
+      fill: #102b31;
+      font-size: 13px;
+      font-weight: 700;
+      text-anchor: middle;
+      pointer-events: none;
+    }
+
+    .segment.is-active text {
+      fill: #fff;
+    }
+
+    .hub {
+      fill: #fff;
+      stroke: #d7dfd9;
+      stroke-width: 1.25;
+    }
+
+    .hub-label {
+      fill: #08716b;
+      font-size: 14px;
+      font-weight: 700;
+      text-anchor: middle;
+    }
+
+    .details {
+      min-height: 156px;
+      padding: 20px 18px 21px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border: 1px solid #d5ded8;
+      border-radius: 16px;
+      background: #fff;
+    }
+
+    .phase-number {
+      width: fit-content;
+      margin: 0 0 8px;
+      padding: 5px 10px 4px;
+      border-radius: 999px;
+      background: #dcefeb;
+      color: #08716b;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .details h1 {
+      margin: 0 0 7px;
+      color: #102b31;
+      font-size: clamp(18px, 2.2vw, 21px);
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .details p:last-child {
+      margin: 0;
+      color: #111;
+      font-size: clamp(16px, 2vw, 18px);
+      line-height: 1.45;
+    }
+
+    @media (max-width: 620px) {
+      body {
+        padding: 24px 16px;
+      }
+
+      .cycle {
+        grid-template-columns: minmax(0, 1fr);
+        justify-items: center;
+        gap: 22px;
+      }
+
+      .wheel {
+        width: min(100%, 320px);
+      }
+
+      .details {
+        width: 100%;
+        min-height: 148px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="cycle" aria-label="Ciclo del equipo de convivencia educativa">
+    <svg class="wheel" viewBox="0 0 320 320" role="group" aria-label="Selecciona una fase del ciclo">
+      <g id="segments"></g>
+      <circle class="hub" cx="160" cy="160" r="62"></circle>
+      <text class="hub-label" x="160" y="146">
+        <tspan x="160">Equipo de</tspan>
+        <tspan x="160" dy="18">convivencia</tspan>
+        <tspan x="160" dy="18">educativa</tspan>
+      </text>
+    </svg>
+
+    <section class="details" aria-live="polite" aria-atomic="true">
+      <p class="phase-number" id="phase-number"></p>
+      <h1 id="phase-title"></h1>
+      <p id="phase-description"></p>
+    </section>
+  </main>
+
+  <script>
+    const phases = [
+      {
+        label: "Diagnosticar y planificar",
+        title: "Se diagnostica y se planifica",
+        description: "¿Qué pasa, a quiénes y por qué? ¿Qué estrategias seleccionamos?",
+        color: "#126f68",
+        baseColor: "#dcefeb"
+      },
+      {
+        label: "Ejecutar y registrar",
+        title: "Se ejecuta y se registra",
+        description: "¿Qué hicimos, con quiénes y cómo?",
+        color: "#986100",
+        baseColor: "#fff1c8"
+      },
+      {
+        label: "Monitorear y ajustar",
+        title: "Se monitorea y se ajusta",
+        description: "¿Funciona? ¿Qué ajustamos ahora?",
+        color: "#ad452e",
+        baseColor: "#ffe2d8"
+      },
+      {
+        label: "Evaluar y volver a empezar",
+        title: "Se evalúa y se vuelve a empezar",
+        description: "¿Qué logramos? ¿Qué decidimos para el próximo ciclo?",
+        color: "#2d5fa3",
+        baseColor: "#deebfb"
+      }
+    ];
+
+    const segmentGroup = document.getElementById("segments");
+    const phaseNumber = document.getElementById("phase-number");
+    const phaseTitle = document.getElementById("phase-title");
+    const phaseDescription = document.getElementById("phase-description");
+    const center = 160;
+    const outerRadius = 150;
+    const innerRadius = 62;
+    const labelRadius = 111;
+
+    function pointAt(radius, degrees) {
+      const radians = degrees * Math.PI / 180;
+      return {
+        x: center + radius * Math.cos(radians),
+        y: center + radius * Math.sin(radians)
+      };
+    }
+
+    function ringPath(startAngle, endAngle) {
+      const outerStart = pointAt(outerRadius, startAngle);
+      const outerEnd = pointAt(outerRadius, endAngle);
+      const innerEnd = pointAt(innerRadius, endAngle);
+      const innerStart = pointAt(innerRadius, startAngle);
+      return [
+        `M ${outerStart.x} ${outerStart.y}`,
+        `A ${outerRadius} ${outerRadius} 0 0 1 ${outerEnd.x} ${outerEnd.y}`,
+        `L ${innerEnd.x} ${innerEnd.y}`,
+        `A ${innerRadius} ${innerRadius} 0 0 0 ${innerStart.x} ${innerStart.y}`,
+        "Z"
+      ].join(" ");
+    }
+
+    function addSvgElement(name, attributes, parent) {
+      const element = document.createElementNS("http://www.w3.org/2000/svg", name);
+      Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, value));
+      parent.appendChild(element);
+      return element;
+    }
+
+    function selectPhase(index) {
+      const phase = phases[index];
+      document.querySelectorAll(".segment").forEach((segment, segmentIndex) => {
+        const selected = segmentIndex === index;
+        segment.classList.toggle("is-active", selected);
+        segment.setAttribute("aria-pressed", String(selected));
+        segment.querySelector("path").setAttribute("fill", selected ? phase.color : phases[segmentIndex].baseColor);
+      });
+
+      phaseNumber.textContent = `Fase ${index + 1} de 4`;
+      phaseTitle.textContent = phase.title;
+      phaseDescription.textContent = phase.description;
+    }
+
+    phases.forEach((phase, index) => {
+      const startAngle = -90 + index * 90 + 1;
+      const endAngle = -90 + (index + 1) * 90 - 1;
+      const midpoint = (startAngle + endAngle) / 2;
+      const labelPoint = pointAt(labelRadius, midpoint);
+      const segment = addSvgElement("g", {
+        class: "segment",
+        role: "button",
+        tabindex: "0",
+        "aria-label": `Fase ${index + 1}: ${phase.label}`,
+        "aria-pressed": "false",
+        "data-index": index
+      }, segmentGroup);
+
+      addSvgElement("path", {
+        d: ringPath(startAngle, endAngle),
+        fill: phase.baseColor
+      }, segment);
+
+      const text = addSvgElement("text", {
+        x: labelPoint.x,
+        y: labelPoint.y - 7
+      }, segment);
+      phase.label.split(" ").reduce((lines, word) => {
+        const current = lines[lines.length - 1];
+        if (current && `${current} ${word}`.length > 15) {
+          lines.push(word);
+        } else {
+          lines[lines.length - 1] = current ? `${current} ${word}` : word;
+        }
+        return lines;
+      }, [""]).forEach((line, lineIndex) => {
+        addSvgElement("tspan", {
+          x: labelPoint.x,
+          dy: lineIndex === 0 ? 0 : 16
+        }, text).textContent = line;
+      });
+
+      segment.addEventListener("click", () => selectPhase(index));
+      segment.addEventListener("keydown", event => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          selectPhase(index);
+        }
+      });
+    });
+
+    selectPhase(0);
+  </script>
+</body>
+</html>
