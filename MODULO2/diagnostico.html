@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pasos del diagnóstico</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #102b31;
+      background: #f3f5f2;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 4px 16px;
+      background: #f3f5f2;
+    }
+
+    .diagnostic {
+      width: min(100%, 1120px);
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .step {
+      min-width: 0;
+      min-height: 75px;
+      padding: 10px 12px;
+      display: grid;
+      grid-template-columns: 19px minmax(0, 1fr);
+      align-items: center;
+      gap: 8px;
+      border: 1px solid #d5ded8;
+      border-radius: 13px;
+      background: #fff;
+      color: #102b31;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+      transition: background-color 160ms ease, border-color 160ms ease;
+    }
+
+    .step:hover {
+      border-color: #9abbb5;
+    }
+
+    .step[aria-selected="true"] {
+      border-color: #087c74;
+      background: #e0f1ee;
+    }
+
+    .step:focus-visible {
+      outline: 3px solid #f5bb2d;
+      outline-offset: 2px;
+    }
+
+    .step-number {
+      color: #607377;
+      font-size: 21px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .step[aria-selected="true"] .step-number {
+      color: #08716b;
+    }
+
+    .step-label {
+      font-size: 17px;
+      line-height: 1.4;
+      overflow-wrap: anywhere;
+    }
+
+    .content {
+      margin-top: 13px;
+      padding: 17px 18px;
+      border: 1px solid #d5ded8;
+      border-radius: 16px;
+      background: #fff;
+    }
+
+    .content p {
+      max-width: 600px;
+      margin: 0;
+      color: #152a30;
+      font-size: 14px;
+      line-height: 1.8;
+      text-align: justify;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        align-items: start;
+        padding: 16px 12px;
+      }
+
+      .steps {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .step {
+        min-height: 72px;
+        padding: 9px 10px;
+        grid-template-columns: 18px minmax(0, 1fr);
+        gap: 6px;
+      }
+
+      .step-label {
+        font-size: 15px;
+      }
+
+      .content {
+        margin-top: 12px;
+        padding: 16px;
+      }
+
+      .content p {
+        font-size: 14px;
+        line-height: 1.6;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="diagnostic">
+    <div class="steps" role="tablist" aria-label="Pasos para el diagnóstico">
+      <button class="step" id="step-1" type="button" role="tab" aria-selected="true" aria-controls="step-content" tabindex="0">
+        <span class="step-number">1</span>
+        <span class="step-label">Definir metas compartidas</span>
+      </button>
+      <button class="step" id="step-2" type="button" role="tab" aria-selected="false" aria-controls="step-content" tabindex="-1">
+        <span class="step-number">2</span>
+        <span class="step-label">Acordar indicadores</span>
+      </button>
+      <button class="step" id="step-3" type="button" role="tab" aria-selected="false" aria-controls="step-content" tabindex="-1">
+        <span class="step-number">3</span>
+        <span class="step-label">Medir y escuchar</span>
+      </button>
+      <button class="step" id="step-4" type="button" role="tab" aria-selected="false" aria-controls="step-content" tabindex="-1">
+        <span class="step-number">4</span>
+        <span class="step-label">Decidir con los datos</span>
+      </button>
+    </div>
+
+    <section class="content" id="step-content" role="tabpanel" aria-labelledby="step-1" tabindex="0" aria-live="polite">
+      <p id="step-description"></p>
+    </section>
+  </main>
+
+  <script>
+    const descriptions = [
+      "Las metas surgen de los modos de convivir que se desean, del <strong>Proyecto Educativo Institucional</strong> y de las voces de estudiantes, familias y equipos. Conceptos amplios como respeto, formación integral o inclusión deben traducirse, a partir de esas voces, en metas concretas.",
+      "Un <strong>indicador</strong> es una medida observable y verificable que permite saber si una meta se cumple y en qué grado; por ejemplo, el porcentaje de asistencia de un curso o el número de conflictos registrados al mes. Debe ser claro, medible y posible de recoger en la escuela. Cuando los indicadores se imponen desde fuera, la comunidad los siente ajenos; cuando surgen de sus propias voces, adquieren <strong>validez social.</strong>",
+      "La información se recoge con tamizajes, encuestas, registros y la experiencia de los distintos estamentos (por ejemplo, <strong>Habilidades para la Vida</strong> o el <strong>tamizaje universal de SENDA</strong>). En una experiencia, la asistencia fue un indicador clave: se definieron rangos, como la <strong>asistencia crítica</strong>, y se actuó a partir de ellos.",
+      "Decidir con los datos significa priorizar: qué indicadores requieren más atención, qué grupos de estudiantes necesitan apoyo, en qué nivel y con qué objetivos verificables. La Agencia de Calidad de la Educación ha sido enfática en esta forma de decidir. Por eso al diagnóstico le sigue la priorización."
+    ];
+
+    const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+    const content = document.getElementById("step-content");
+    const description = document.getElementById("step-description");
+
+    function selectStep(index, moveFocus) {
+      tabs.forEach((tab, tabIndex) => {
+        const selected = tabIndex === index;
+        tab.setAttribute("aria-selected", String(selected));
+        tab.tabIndex = selected ? 0 : -1;
+      });
+
+      content.setAttribute("aria-labelledby", tabs[index].id);
+      description.innerHTML = descriptions[index];
+      if (moveFocus) {
+        tabs[index].focus();
+      }
+    }
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => selectStep(index, false));
+      tab.addEventListener("keydown", event => {
+        let nextIndex = index;
+        if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+          nextIndex = (index + 1) % tabs.length;
+        } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+          nextIndex = (index - 1 + tabs.length) % tabs.length;
+        } else if (event.key === "Home") {
+          nextIndex = 0;
+        } else if (event.key === "End") {
+          nextIndex = tabs.length - 1;
+        } else {
+          return;
+        }
+
+        event.preventDefault();
+        selectStep(nextIndex, true);
+      });
+    });
+
+    selectStep(0, false);
+  </script>
+</body>
+</html>
