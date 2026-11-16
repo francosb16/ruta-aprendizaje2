@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Filtro de estrategia</title>
+  <style>
+    :root {
+      --bg: #f0f1ef;
+      --panel-bg: #f7f7f5;
+      --panel-border: #3a9a8a;
+      --panel-border-strong: #2d8e82;
+      --line: #c8d1cb;
+      --text: #1d2b2d;
+      --muted: #838d8f;
+      --green: #4b9f69;
+      --green-dark: #2f7c4d;
+      --green-soft: #cfead8;
+      --red-soft: #f3d0cb;
+      --red: #d36b4e;
+      --yellow: #e6b526;
+      --gray: #d8dfe0;
+      --gray-dark: #b6c0c2;
+      --no-color: #d9d9d4;
+      --shadow: rgba(0, 0, 0, 0.03);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 18px;
+    }
+
+    .panel {
+      width: min(100%, 1280px);
+      background: rgba(255,255,255,0.12);
+      border: 3px dashed var(--panel-border);
+      border-radius: 10px;
+      padding: 0 0 12px;
+      box-shadow: 0 0 0 2px rgba(58,154,138,0.05);
+    }
+
+    .panel-inner {
+      background: var(--panel-bg);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 18px 10px 18px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    .diamond {
+      width: 12px;
+      height: 12px;
+      background: var(--yellow);
+      transform: rotate(45deg);
+      border-radius: 2px;
+      box-shadow: 0 0 0 2px rgba(230,181,38,0.15);
+      flex-shrink: 0;
+    }
+
+    .header-title {
+      font-size: clamp(20px, 2vw, 28px);
+      margin: 0;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .intro {
+      font-size: clamp(18px, 1.5vw, 25px);
+      line-height: 1.45;
+      margin: 0;
+      padding: 0 18px 18px 18px;
+      font-weight: 400;
+      color: var(--text);
+      max-width: 100%;
+    }
+
+    .rows {
+      border-top: 2px solid var(--line);
+      margin: 0 18px;
+    }
+
+    .question-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) auto;
+      align-items: center;
+      gap: 20px;
+      min-height: 104px;
+      padding: 14px 0 12px 0;
+      border-bottom: 2px solid var(--line);
+    }
+
+    .question-label {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 0;
+      flex-wrap: wrap;
+    }
+
+    .category {
+      margin: 0;
+      font-size: clamp(22px, 2.4vw, 30px);
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+      font-weight: 700;
+      color: var(--text);
+      display: inline-block;
+    }
+
+    .prompt {
+      margin: 0;
+      font-size: clamp(18px, 1.7vw, 26px);
+      line-height: 1.4;
+      color: var(--text);
+      font-weight: 400;
+      max-width: 100%;
+    }
+
+    .toggle-group {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      min-width: 210px;
+      padding-left: 16px;
+    }
+
+    .toggle-btn {
+      appearance: none;
+      -webkit-appearance: none;
+      border: 0;
+      background: var(--gray);
+      color: var(--text);
+      width: 78px;
+      height: 42px;
+      border-radius: 999px;
+      font-size: clamp(18px, 1.6vw, 23px);
+      font-weight: 700;
+      line-height: 1;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      box-shadow: inset 0 0 0 2px rgba(31, 52, 56, 0.03);
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
+
+    .toggle-btn:hover {
+      filter: brightness(0.98);
+    }
+
+    .toggle-btn:focus-visible {
+      outline: 3px solid rgba(60, 146, 119, 0.45);
+      outline-offset: 2px;
+    }
+
+    .toggle-btn.is-selected {
+      color: white;
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.12);
+    }
+
+    .toggle-btn.yes {
+      background: var(--green);
+    }
+
+    .toggle-btn.yes.is-selected {
+      background: var(--green-dark);
+    }
+
+    .toggle-btn.no {
+      background: var(--gray);
+      color: var(--text);
+    }
+
+    .toggle-btn.no.is-selected {
+      background: var(--red);
+      color: #fff;
+    }
+
+    .status-box {
+      margin: 18px 18px 0;
+      border: 2px solid transparent;
+      border-radius: 10px;
+      padding: 22px 18px 20px;
+      font-weight: 700;
+      color: var(--text);
+      font-size: clamp(19px, 2vw, 36px);
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      transition: all 0.2s ease;
+    }
+
+    .status-box.pass {
+      background: rgba(116, 185, 145, 0.22);
+      border-color: rgba(62, 153, 88, 0.32);
+      color: #1b7d48;
+    }
+
+    .status-box.fail {
+      background: rgba(218, 109, 76, 0.18);
+      border-color: rgba(201, 92, 69, 0.32);
+      color: #b45332;
+    }
+
+    @media (max-width: 980px) {
+      .panel { width: min(100%, 920px); }
+      .question-row {
+        grid-template-columns: 1fr;
+        align-items: flex-start;
+        gap: 14px;
+        padding-top: 18px;
+      }
+
+      .question-label {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+
+      .toggle-group {
+        justify-content: flex-start;
+        min-width: auto;
+        padding-left: 0;
+      }
+    }
+
+    @media (max-width: 620px) {
+      body { padding: 10px; }
+      .panel { border-width: 2px; }
+      .header { padding: 14px 12px 8px; }
+      .intro { padding: 0 12px 12px; }
+      .rows { margin: 0 12px; }
+      .status-box { margin: 14px 12px 0; padding: 16px 12px; }
+      .header-title { font-size: 26px; }
+      .intro, .prompt { font-size: 18px; }
+      .category { font-size: 24px; }
+      .toggle-btn {
+        width: 70px;
+        height: 38px;
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="panel" aria-label="Encuesta del filtro de estrategia">
+    <div class="panel-inner">
+      <div class="header">
+        <span class="diamond" aria-hidden="true"></span>
+        <h1 class="header-title">Pasa una estrategia por el filtro</h1>
+      </div>
+
+      <p class="intro">
+        Una escuela quiere instalar un programa de mediación entre pares en todos los cursos. Responde Sí o No a cada pregunta:
+      </p>
+
+      <div class="rows" id="survey-rows">
+        <div class="question-row" data-question="Necesidad">
+          <div class="question-label">
+            <h2 class="category">Necesidad</h2>
+            <p class="prompt">¿Responde al diagnóstico y a la hipótesis?</p>
+          </div>
+          <div class="toggle-group" aria-label="Necesidad">
+            <button type="button" class="toggle-btn yes" data-value="yes" aria-pressed="false">Sí</button>
+            <button type="button" class="toggle-btn no" data-value="no" aria-pressed="false">No</button>
+          </div>
+        </div>
+
+        <div class="question-row" data-question="Evidencia">
+          <div class="question-label">
+            <h2 class="category">Evidencia</h2>
+            <p class="prompt">¿Qué respaldo tiene, en la literatura científica y en experiencias de otras escuelas?</p>
+          </div>
+          <div class="toggle-group" aria-label="Evidencia">
+            <button type="button" class="toggle-btn yes" data-value="yes" aria-pressed="false">Sí</button>
+            <button type="button" class="toggle-btn no" data-value="no" aria-pressed="false">No</button>
+          </div>
+        </div>
+
+        <div class="question-row" data-question="Ajuste">
+          <div class="question-label">
+            <h2 class="category">Ajuste</h2>
+            <p class="prompt">¿Es pertinente cultural y pedagógicamente para este establecimiento?</p>
+          </div>
+          <div class="toggle-group" aria-label="Ajuste">
+            <button type="button" class="toggle-btn yes" data-value="yes" aria-pressed="false">Sí</button>
+            <button type="button" class="toggle-btn no" data-value="no" aria-pressed="false">No</button>
+          </div>
+        </div>
+
+        <div class="question-row" data-question="Capacidad">
+          <div class="question-label">
+            <h2 class="category">Capacidad</h2>
+            <p class="prompt">¿Tenemos tiempo y competencias? ¿Hay personas formadas para conducir y supervisar la mediación?</p>
+          </div>
+          <div class="toggle-group" aria-label="Capacidad">
+            <button type="button" class="toggle-btn yes" data-value="yes" aria-pressed="false">Sí</button>
+            <button type="button" class="toggle-btn no" data-value="no" aria-pressed="false">No</button>
+          </div>
+        </div>
+
+        <div class="question-row" data-question="Usabilidad">
+          <div class="question-label">
+            <h2 class="category">Usabilidad</h2>
+            <p class="prompt">¿Puede aplicarse en el trabajo real? ¿Hay un espacio y un horario protegidos para las mediaciones?</p>
+          </div>
+          <div class="toggle-group" aria-label="Usabilidad">
+            <button type="button" class="toggle-btn yes" data-value="yes" aria-pressed="false">Sí</button>
+            <button type="button" class="toggle-btn no" data-value="no" aria-pressed="false">No</button>
+          </div>
+        </div>
+
+        <div class="question-row" data-question="Soportes">
+          <div class="question-label">
+            <h2 class="category">Soportes</h2>
+            <p class="prompt">¿Habrá acompañamiento y recursos?</p>
+          </div>
+          <div class="toggle-group" aria-label="Soportes">
+            <button type="button" class="toggle-btn yes" data-value="yes" aria-pressed="false">Sí</button>
+            <button type="button" class="toggle-btn no" data-value="no" aria-pressed="false">No</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="status-box" class="status-box pass" aria-live="polite">
+        La estrategia pasa el filtro: incluye en el Plan, con responsable, plazo, recursos, indicador y medio de verificación.
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const rows = document.querySelectorAll('.question-row');
+    const statusBox = document.getElementById('status-box');
+
+    function setRowState(row, selectedValue) {
+      const buttons = row.querySelectorAll('.toggle-btn');
+      buttons.forEach((button) => {
+        const isSelected = button.dataset.value === selectedValue;
+        button.classList.toggle('is-selected', isSelected);
+        button.setAttribute('aria-pressed', String(isSelected));
+      });
+    }
+
+    function updateStatus() {
+      let noCount = 0;
+
+      rows.forEach((row) => {
+        const selected = row.querySelector('.toggle-btn.is-selected');
+        if (selected && selected.dataset.value === 'no') {
+          noCount += 1;
+        }
+      });
+
+      if (noCount === 0) {
+        statusBox.className = 'status-box pass';
+        statusBox.textContent = 'La estrategia pasa el filtro: incluye en el Plan, con responsable, plazo, recursos, indicador y medio de verificación.';
+      } else {
+        statusBox.className = 'status-box fail';
+        statusBox.textContent = `La estrategia no pasa el filtro en ${noCount} pregunta(s). Mejor otra que sí responda al diagnóstico y a las condiciones reales.`;
+      }
+    }
+
+    rows.forEach((row) => {
+      const buttons = row.querySelectorAll('.toggle-btn');
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const selectedValue = button.dataset.value;
+          setRowState(row, selectedValue);
+          updateStatus();
+        });
+      });
+    });
+
+    rows.forEach((row) => {
+      const yesButton = row.querySelector('.toggle-btn.yes');
+      if (yesButton) {
+        setRowState(row, 'yes');
+      }
+    });
+    updateStatus();
+  </script>
+</body>
+</html>
