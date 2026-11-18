@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Objetivos verificables</title>
+  <style>
+    :root {
+      font-family: Arial, Helvetica, sans-serif;
+      color-scheme: light;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 16px;
+      background: #ffffff;
+    }
+
+    .objectives {
+      width: min(100%, 1120px);
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      min-height: 214px;
+      border: 0;
+      border-top: 6px solid #d6aa54;
+      border-radius: 14px;
+      padding: 22px 26px 18px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      color: #102b31;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+      transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
+    }
+
+    .card:focus-visible {
+      outline: 3px solid #f1b52d;
+      outline-offset: 4px;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+    }
+
+    .card.vague {
+      background: #fff9e9;
+    }
+
+    .card.verifiable {
+      background: #efffe9;
+      border-top-color: #7d9f48;
+    }
+
+    .card.is-open {
+      background: #087274;
+      border-top-color: #087274;
+      color: #ffffff;
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    .card.vague .card-title {
+      color: #e13d18;
+    }
+
+    .card.verifiable .card-title {
+      color: #008d2f;
+    }
+
+    .card.is-open .card-title {
+      color: #ffffff;
+    }
+
+    .card-content {
+      align-self: center;
+      margin: 14px 0;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .card-hint {
+      margin: 0;
+      align-self: end;
+      color: #1d7c6e;
+      font-size: 12px;
+      line-height: 1.2;
+    }
+
+    .card.is-open .card-hint {
+      color: #ffffff;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        align-items: start;
+        padding: 12px;
+      }
+
+      .objectives {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .card {
+        min-height: 180px;
+        padding: 18px 20px 16px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="objectives" aria-label="Tipos de objetivos">
+    <button class="card vague" type="button" aria-expanded="false">
+      <h2 class="card-title">Objetivo vago</h2>
+      <p class="card-content" hidden>Mejorar la convivencia del curso.</p>
+      <p class="card-hint">Toca para ver el ejemplo</p>
+    </button>
+
+    <button class="card verifiable" type="button" aria-expanded="false">
+      <h2 class="card-title">Objetivo verificable</h2>
+      <p class="card-content" hidden>Aumentar a un 80 % la proporción de estudiantes del 8° básico que identifiquen los canales para pedir ayuda y disminuir en un 40 % los conflictos registrados en el curso, al término del primer semestre.</p>
+      <p class="card-hint">Toca para ver el ejemplo</p>
+    </button>
+  </main>
+
+  <script>
+    const cards = document.querySelectorAll(".card");
+
+    cards.forEach((card) => {
+      card.addEventListener("click", () => {
+        const isOpen = card.classList.toggle("is-open");
+        const title = card.querySelector(".card-title");
+        const content = card.querySelector(".card-content");
+        const hint = card.querySelector(".card-hint");
+
+        title.hidden = isOpen;
+        content.hidden = !isOpen;
+        hint.textContent = isOpen ? "Toca para volver" : "Toca para ver el ejemplo";
+        card.setAttribute("aria-expanded", String(isOpen));
+      });
+    });
+  </script>
+</body>
+</html>
