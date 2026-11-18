@@ -1,0 +1,162 @@
+
+<div style="width: 100%; max-width: 1120px; margin: 0 auto; box-sizing: border-box; font-family: Arial, Helvetica, sans-serif;">
+
+  <style>
+    .moodle-tabs-container input[type="radio"] {
+      display: none;
+    }
+
+    .moodle-tabs-container {
+      width: 100%;
+      min-width: 0;
+    }
+
+    .moodle-tabs-container .tab-content {
+      width: 100%;
+      min-height: 118px;
+      display: none;
+      padding: clamp(16px, 2vw, 22px);
+      background-color: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-top: 4px solid #105c53;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(16, 92, 83, 0.05);
+      box-sizing: border-box;
+    }
+
+    #conv-tab1:checked ~ .contents #conv-content1,
+    #conv-tab2:checked ~ .contents #conv-content2,
+    #conv-tab3:checked ~ .contents #conv-content3,
+    #conv-tab4:checked ~ .contents #conv-content4 {
+      display: block;
+    }
+
+    .moodle-tabs-container .tab-labels {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .moodle-tabs-container .tab-labels label {
+      background-color: #f1f5f9;
+      color: #105c53;
+      border: 1px solid #cbd5e1;
+      min-height: 58px;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(8px, 1.2vw, 12px) clamp(8px, 1.5vw, 18px);
+      font-size: clamp(13px, 1.15vw, 16px);
+      font-weight: bold;
+      line-height: 1.25;
+      text-align: center;
+      overflow-wrap: anywhere;
+      border-radius: 8px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+
+    .moodle-tabs-container .tab-labels label:hover {
+      background-color: #e2e8f0;
+    }
+
+    #conv-tab1:checked ~ .tab-labels label[for="conv-tab1"],
+    #conv-tab2:checked ~ .tab-labels label[for="conv-tab2"],
+    #conv-tab3:checked ~ .tab-labels label[for="conv-tab3"],
+    #conv-tab4:checked ~ .tab-labels label[for="conv-tab4"] {
+      background-color: #105c53;
+      color: #ffffff;
+      border-color: #105c53;
+      box-shadow: 0 2px 4px rgba(16, 92, 83, 0.2);
+    }
+
+    .moodle-tabs-container .tab-content p {
+      max-width: 100%;
+      font-size: clamp(14px, 1.35vw, 16px);
+    }
+
+    @media (max-width: 980px) {
+      .moodle-tabs-container .tab-labels {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      .moodle-tabs-container .tab-labels {
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .moodle-tabs-container .tab-labels label {
+        min-height: 64px;
+        padding: 10px 12px;
+        font-size: 13px;
+      }
+
+      .moodle-tabs-container .tab-content {
+        padding: 16px;
+        min-height: 0;
+      }
+
+      .moodle-tabs-container .tab-content p {
+        font-size: 14px;
+        line-height: 1.55;
+      }
+    }
+  </style>
+
+  <div class="moodle-tabs-container">
+
+    <!-- CONTROLES DE PESTAÑAS -->
+    <input type="radio" id="conv-tab1" name="conv-moodle-tabs" checked="checked">
+    <input type="radio" id="conv-tab2" name="conv-moodle-tabs">
+    <input type="radio" id="conv-tab3" name="conv-moodle-tabs">
+    <input type="radio" id="conv-tab4" name="conv-moodle-tabs">
+
+    <!-- BOTONES DE NAVEGACIÓN -->
+    <div class="tab-labels">
+      <label for="conv-tab1"><span style="font-size: medium;">Ley y Política Nacional</span></label>
+      <label for="conv-tab2"><span style="font-size: medium;">PEI</span></label>
+      <label for="conv-tab3"><span style="font-size: medium;">PME</span></label>
+      <label for="conv-tab4"><span style="font-size: medium;">Reglamento Interno y protocolos</span></label>
+    </div>
+
+    <!-- CONTENIDOS -->
+
+    <div class="contents">
+
+      <!-- PESTAÑA 1 -->
+      <div id="conv-content1" class="tab-content">
+        <p style="margin: 0; color: #1e293b; font-size: 14px; line-height: 1.6; text-align: justify;">
+          <span style="font-size: medium;">La normativa vigente (<strong>Ley 21.809</strong>) y la <strong>Política Nacional de Convivencia Educativa</strong> dan el marco y los lineamientos que el Plan debe considerar.</span>
+        </p>
+      </div>
+
+      <!-- PESTAÑA 2 -->
+      <div id="conv-content2" class="tab-content">
+        <p style="margin: 0; color: #1e293b; font-size: 14px; line-height: 1.6; text-align: justify;">
+          <span style="font-size: medium;">El <strong>Proyecto Educativo Institucional</strong> aporta el sentido formativo y los sellos del establecimiento. La visión, la misión, los sellos y los modos de convivir trazan el horizonte de las metas.</span>
+        </p>
+      </div>
+
+      <!-- PESTAÑA 3 -->
+      <div id="conv-content3" class="tab-content">
+        <p style="margin: 0; color: #1e293b; font-size: 14px; line-height: 1.6; text-align: justify;">
+          <span style="font-size: medium;">El Plan se articula con los objetivos anuales y las acciones del <strong>Plan de Mejoramiento Educativo</strong> y con su ciclo de cuatro años.</span>
+        </p>
+      </div>
+
+      <!-- PESTAÑA 4 -->
+      <div id="conv-content4" class="tab-content">
+        <p style="margin: 0; color: #1e293b; font-size: 14px; line-height: 1.6; text-align: justify;">
+          <span style="font-size: medium;">El <strong>Reglamento Interno y los protocolos</strong> regulan derechos, deberes, faltas, medidas y rutas de actuación; el Plan no los sustituye. Ante acoso, violencia, delitos o vulneración de derechos se activa el protocolo: la gestión colaborativa de conflictos no lo reemplaza. En el nivel universal, la protección de la salud mental incluye un marco normativo claro.</span>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</div>
