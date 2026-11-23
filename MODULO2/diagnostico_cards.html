@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dimensiones del diagnóstico</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 8px;
+      background: #f3f5f2;
+      color: #152b33;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      width: 100%;
+    }
+
+    .card {
+      min-width: 0;
+      height: 310px;
+      perspective: 1200px;
+    }
+
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 600ms cubic-bezier(.2, .75, .2, 1);
+    }
+
+    .card.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .face {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      min-width: 0;
+      padding: 18px 18px 17px;
+      border-radius: 15px;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    .front {
+      border: 1px solid #d0d8dd;
+      background: #ffffff;
+    }
+
+    .back {
+      transform: rotateY(180deg);
+      border: 0;
+      background: #197482;
+      color: #ffffff;
+    }
+
+    h2,
+    p {
+      margin: 0;
+    }
+
+    h2 {
+      font-size: 18px;
+      line-height: 1.25;
+      letter-spacing: -0.2px;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      color: #3d4a50;
+      font-size: 18px;
+      line-height: 1.35;
+    }
+
+    .back-content {
+      min-height: 0;
+    }
+
+    .back-text {
+      max-width: 530px;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .flip-button {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: #7163b7;
+      font: inherit;
+      font-size: 13px;
+      line-height: 1.25;
+      cursor: pointer;
+    }
+
+    .back .flip-button {
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 7px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .back .flip-button:hover {
+      background: #ffffff;
+      color: #197482;
+    }
+
+    .flip-button:focus-visible {
+      border-radius: 3px;
+      outline: 3px solid #f5c451;
+      outline-offset: 3px;
+    }
+
+    .front {
+      cursor: pointer;
+      user-select: text;
+    }
+
+    .back {
+      cursor: default;
+      user-select: text;
+    }
+
+    @media (max-width: 700px) {
+      body {
+        padding: 8px;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .card {
+        height: 280px;
+      }
+
+      .face {
+        padding: 18px;
+      }
+
+      h2,
+      .subtitle {
+        font-size: 17px;
+      }
+
+      .back-text {
+        font-size: 15px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card-inner {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="cards" aria-label="Dimensiones del diagnóstico">
+    <article class="card">
+      <div class="card-inner">
+        <section class="face front" aria-label="Dimensión ética del diagnóstico">
+          <div>
+            <h2>Dimensión ética del diagnóstico</h2>
+            <p class="subtitle">Cómo se cuida a las personas y sus datos.</p>
+          </div>
+          <button class="flip-button" type="button" aria-expanded="false">Toca para ver</button>
+        </section>
+        <section class="face back" aria-hidden="true" inert>
+          <div class="back-content">
+            <p class="back-text">Los datos se usan con finalidad educativa y de forma proporcional, se resguarda la confidencialidad, no se publica información clínica que identifique a estudiantes y se cuida el impacto emocional de las preguntas. Orientan este trabajo las cinco prácticas éticas de la Política Nacional de Convivencia Educativa: proteger, potenciar, diversificar, afectar y dialogar.</p>
+          </div>
+          <button class="flip-button" type="button">Toca para volver</button>
+        </section>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-inner">
+        <section class="face front" aria-label="Mirada ecológica">
+          <div>
+            <h2>Mirada ecológica</h2>
+            <p class="subtitle">En qué niveles se leen las fuentes.</p>
+          </div>
+          <button class="flip-button" type="button" aria-expanded="false">Toca para ver</button>
+        </section>
+        <section class="face back" aria-hidden="true" inert>
+          <div class="back-content">
+            <p class="back-text">Las fuentes se leen en cinco niveles: estudiante, curso, familia, escuela y territorio. Así se evita explicar las dificultades solo por características individuales.</p>
+          </div>
+          <button class="flip-button" type="button">Toca para volver</button>
+        </section>
+      </div>
+    </article>
+  </main>
+
+  <script>
+    document.querySelectorAll(".card").forEach((card) => {
+      const front = card.querySelector(".front");
+      const back = card.querySelector(".back");
+      const frontButton = front.querySelector("button");
+      const backButton = back.querySelector("button");
+
+      function setFlipped(flipped) {
+        card.classList.toggle("flipped", flipped);
+        front.setAttribute("aria-hidden", String(flipped));
+        back.setAttribute("aria-hidden", String(!flipped));
+        front.toggleAttribute("inert", flipped);
+        back.toggleAttribute("inert", !flipped);
+        frontButton.setAttribute("aria-expanded", String(flipped));
+        (flipped ? backButton : frontButton).focus();
+      }
+
+      front.addEventListener("click", () => setFlipped(true));
+      frontButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        setFlipped(true);
+      });
+      backButton.addEventListener("click", () => setFlipped(false));
+    });
+  </script>
+</body>
+</html>
